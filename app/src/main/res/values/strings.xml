@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MediaCollections</string>
+    <string name="content_description_iv_button">image view as a button</string>
 </resources>
