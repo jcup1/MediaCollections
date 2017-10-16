@@ -15,13 +15,13 @@
  *******************************************************************************/
 package mywins.theandroiddev.com.mediacollections.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -42,6 +42,7 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+import butterknife.ButterKnife;
 import mywins.theandroiddev.com.mediacollections.Constants;
 import mywins.theandroiddev.com.mediacollections.ExtendedViewPager;
 import mywins.theandroiddev.com.mediacollections.R;
@@ -61,24 +62,16 @@ public class ImagePagerFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_image_pager, container, false);
         ExtendedViewPager pager = rootView.findViewById(R.id.pager);
 
-        //It could be RecyclerView but not it's necessary and it would take longer
-
         pager.setAdapter(new ImageAdapter(getActivity()));
         pager.setCurrentItem(getArguments().getInt(Constants.Extra.IMAGE_POSITION, 0));
         return rootView;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
-    }
-
-    private static class ImageAdapter extends PagerAdapter {
+    static class ImageAdapter extends PagerAdapter {
 
         private static final String[] IMAGE_URLS = Constants.IMAGES;
         ImageView pagerFilter1, pagerFilter2, pagerFilter3;
+        int currentFilter;
         ConstraintLayout pagerLayout;
         CardView pagerCardView;
         private Context context;
@@ -88,6 +81,8 @@ public class ImagePagerFragment extends Fragment {
         ImageAdapter(Context context) {
             this.context = context;
             inflater = LayoutInflater.from(context);
+
+            ButterKnife.bind((Activity) context);
 
             options = new DisplayImageOptions.Builder()
                     .showImageForEmptyUri(R.drawable.ic_empty)
@@ -101,7 +96,7 @@ public class ImagePagerFragment extends Fragment {
                     .build();
         }
 
-        public static void setSepiaColorFilter(ImageView drawable) {
+        void setSepiaColorFilter(ImageView drawable) {
             if (drawable == null)
                 return;
 
@@ -118,6 +113,14 @@ public class ImagePagerFragment extends Fragment {
             drawable.setColorFilter(filter);
         }
 
+        void setAccentColorFilter(ImageView drawable) {
+            drawable.setColorFilter(ContextCompat.getColor(context, R.color.colorAccent), android.graphics.PorterDuff.Mode.MULTIPLY);
+        }
+
+        void setDarkColorFilter(ImageView drawable) {
+            drawable.setColorFilter(ContextCompat.getColor(context, R.color.cardview_dark_background), android.graphics.PorterDuff.Mode.MULTIPLY);
+        }
+
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((View) object);
@@ -128,18 +131,57 @@ public class ImagePagerFragment extends Fragment {
             return IMAGE_URLS.length;
         }
 
+        private void addFilter(int i, final TouchImageView tiv) {
+            if (currentFilter != i) {
+                switch (i) {
+                    case 1:
+                        setAccentColorFilter(tiv);
+                        break;
+                    case 2:
+                        setSepiaColorFilter(tiv);
+                        break;
+                    case 3:
+                        setDarkColorFilter(tiv);
+                        break;
+                }
+            }
+
+        }
+
         @Override
         public Object instantiateItem(ViewGroup view, final int position) {
+            currentFilter = -1;
             View imageLayout = inflater.inflate(R.layout.item_pager_image, view, false);
-            assert imageLayout != null;
+
             final TouchImageView touchImageView = imageLayout.findViewById(R.id.image);
             final ProgressBar spinner = imageLayout.findViewById(R.id.loading);
 
+            //It could be RecyclerView but not it's necessary and it would take longer
             pagerFilter1 = imageLayout.findViewById(R.id.pager_filter_1);
             pagerFilter2 = imageLayout.findViewById(R.id.pager_filter_2);
             pagerFilter3 = imageLayout.findViewById(R.id.pager_filter_3);
             pagerLayout = imageLayout.findViewById(R.id.pager_image_layout);
             pagerCardView = imageLayout.findViewById(R.id.pager_card_view);
+
+            pagerFilter1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setAccentColorFilter(touchImageView);
+                }
+            });
+            pagerFilter2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setSepiaColorFilter(touchImageView);
+                }
+            });
+
+            pagerFilter3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setDarkColorFilter(touchImageView);
+                }
+            });
 
             ImageLoader.getInstance().displayImage(IMAGE_URLS[position], touchImageView, options, new SimpleImageLoadingListener() {
                 @Override
@@ -181,14 +223,15 @@ public class ImagePagerFragment extends Fragment {
                 public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                     spinner.setVisibility(View.GONE);
                     //JCUP- strange bug (I have to set touchImageView visibility to GONE and change it to VISIBLE
-                    //after ProgressBar is set to GONE. Otherwise it won't work. I can't believe that this thing
+                    //after ProgressBar is set to GONE. Otherwise it won't work
+                    setFilters(position);
                     touchImageView.setVisibility(View.VISIBLE);
                     pagerCardView.setVisibility(View.VISIBLE);
 
                 }
             });
 
-            view.addView(imageLayout, 0);
+            view.addView(imageLayout);
             return imageLayout;
         }
 
@@ -197,10 +240,10 @@ public class ImagePagerFragment extends Fragment {
             Glide.with(pagerLayout).load(IMAGE_URLS[position]).into(pagerFilter1);
             Glide.with(pagerLayout).load(IMAGE_URLS[position]).into(pagerFilter2);
             Glide.with(pagerLayout).load(IMAGE_URLS[position]).into(pagerFilter3);
-            pagerFilter1.setColorFilter(ContextCompat.getColor(context, R.color.colorAccent), android.graphics.PorterDuff.Mode.MULTIPLY);
-            pagerFilter2.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary), android.graphics.PorterDuff.Mode.MULTIPLY);
-            pagerFilter3.setColorFilter(ContextCompat.getColor(context, R.color.cardview_dark_background), android.graphics.PorterDuff.Mode.MULTIPLY);
+            setAccentColorFilter(pagerFilter1);
             setSepiaColorFilter(pagerFilter2);
+            setDarkColorFilter(pagerFilter3);
+
         }
 
         @Override
@@ -216,7 +259,6 @@ public class ImagePagerFragment extends Fragment {
         public Parcelable saveState() {
             return null;
         }
-
 
     }
 }

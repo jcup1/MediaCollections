@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         config.threadPriority(Thread.NORM_PRIORITY - 2);
         config.denyCacheImageMultipleSizesInMemory();
         config.diskCacheFileNameGenerator(new Md5FileNameGenerator());
-        config.diskCacheSize(50 * 1024 * 1024); // 50 MiB
+        config.diskCacheSize(50 * 1024 * 1024);
         config.tasksProcessingOrder(QueueProcessingType.LIFO);
         // Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(config.build());
@@ -54,16 +54,16 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.main_images_cv)
     public void openImageGallery() {
-        onImageGridClick();
+        onImageGalleryClick();
 
     }
 
     @OnClick(R.id.main_music_cv)
     public void openMusicGallery() {
-        //startActivity(new Intent(this, MusicGallery.class));
+        //TODO
     }
 
-    public void onImageGridClick() {
+    public void onImageGalleryClick() {
         Intent intent = new Intent(this, SimpleImageActivity.class);
         intent.putExtra(Constants.Extra.FRAGMENT_INDEX, ImageGridFragment.INDEX);
         startActivity(intent);
