@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">MediaCollections</string>
     <string name="content_description_iv_button">image view as a button</string>
+    <string name="content_description_image">image</string>
+    <string name="descr_image">image</string>
+    <string name="ac_name_image_grid">Images</string>
+    <string name="ac_name_image_pager">Slides</string>
+    <string name="title_grid">Grid</string>
 </resources>
