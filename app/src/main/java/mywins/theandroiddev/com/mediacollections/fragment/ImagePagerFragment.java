@@ -44,14 +44,14 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 
 import butterknife.ButterKnife;
 import mywins.theandroiddev.com.mediacollections.Constants;
-import mywins.theandroiddev.com.mediacollections.ExtendedViewPager;
 import mywins.theandroiddev.com.mediacollections.R;
-import mywins.theandroiddev.com.mediacollections.TouchImageView;
+import mywins.theandroiddev.com.mediacollections.views.ExtendedViewPager;
+import mywins.theandroiddev.com.mediacollections.views.TouchImageView;
 
 
 /**
  * @author Sergey Tarasevich (nostra13[at]gmail[dot]com)
- * @edited by jcup
+ * @author edited by jcup
  */
 public class ImagePagerFragment extends Fragment {
 

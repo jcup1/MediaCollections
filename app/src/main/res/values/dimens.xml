@@ -2,4 +2,6 @@
 <resources>
 
     <dimen name="filter_size">74dp</dimen>
+    <dimen name="text_size">12sp</dimen>
+    <dimen name="touch_default">45dp</dimen>
 </resources>

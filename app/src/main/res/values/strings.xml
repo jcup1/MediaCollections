@@ -6,4 +6,8 @@
     <string name="ac_name_image_grid">Images</string>
     <string name="ac_name_image_pager">Slides</string>
     <string name="title_grid">Grid</string>
+    <string name="play_initial_time">00:00</string>
+    <string name="track_number">Track</string>
+    <string name="song_title">SONG TITLE</string>
+    <string name="_00_00">00:00</string>
 </resources>

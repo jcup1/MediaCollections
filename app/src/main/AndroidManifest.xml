@@ -21,6 +21,15 @@
         </activity>
         <activity android:name=".activity.SimpleImageActivity">
         </activity>
+        <activity
+            android:name=".activity.SimpleMusicActivity"
+            android:label="Music">
+        </activity>
+
+        <service
+            android:name="mywins.theandroiddev.com.mediacollections.SimpleMusicService"
+            android:enabled="true">
+        </service>
     </application>
 
 </manifest>

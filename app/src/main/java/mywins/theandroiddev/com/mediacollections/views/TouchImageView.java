@@ -1,4 +1,4 @@
-package mywins.theandroiddev.com.mediacollections;
+package mywins.theandroiddev.com.mediacollections.views;
 
 import android.annotation.TargetApi;
 import android.content.Context;

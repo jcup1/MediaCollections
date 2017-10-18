@@ -18,9 +18,8 @@ import java.io.InputStream;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import mywins.theandroiddev.com.mediacollections.Constants;
 import mywins.theandroiddev.com.mediacollections.R;
-import mywins.theandroiddev.com.mediacollections.fragment.ImageGridFragment;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
         config.diskCacheFileNameGenerator(new Md5FileNameGenerator());
         config.diskCacheSize(50 * 1024 * 1024);
         config.tasksProcessingOrder(QueueProcessingType.LIFO);
-        // Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(config.build());
     }
 
@@ -61,11 +59,17 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.main_music_cv)
     public void openMusicGallery() {
         //TODO
+        onMusicGalleryClick();
+    }
+
+    private void onMusicGalleryClick() {
+
+        Intent intent = new Intent(this, SimpleMusicActivity.class);
+        startActivity(intent);
     }
 
     public void onImageGalleryClick() {
         Intent intent = new Intent(this, SimpleImageActivity.class);
-        intent.putExtra(Constants.Extra.FRAGMENT_INDEX, ImageGridFragment.INDEX);
         startActivity(intent);
     }
 

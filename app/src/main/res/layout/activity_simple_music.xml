@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="mywins.theandroiddev.com.mediacollections.activity.SimpleMusicActivity">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/gallery_jcplayer"
+        android:layout_gravity="center"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+    </android.support.v7.widget.RecyclerView>
+
+    <mywins.theandroiddev.com.mediacollections.views.PlayerView
+        android:id="@+id/gallery_jcplayer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="bottom"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="435dp"/>
+
+</RelativeLayout>
